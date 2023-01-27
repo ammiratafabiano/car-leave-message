@@ -1,0 +1,12 @@
+{
+    "HOME_PAGE": {
+        "TITLE": "Leave a message",
+        "DESCRIPTION": "Ciao! I created this page to be alerted in case of emergency.",
+        "NAME": "Name",
+        "NAME_ERROR": "Name is required",
+        "PHONE": "Phone (optional)",
+        "CONTENT": "Message",
+        "CONTENT_ERROR": "Message is required",
+        "SEND": "Submit"
+    }
+}

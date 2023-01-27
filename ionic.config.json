@@ -1,0 +1,7 @@
+{
+  "name": "car-leave-message",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
