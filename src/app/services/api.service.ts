@@ -32,7 +32,7 @@ export class ApiService {
 
   sendMessage(sender: string, content: string, phone: string): Observable<ResponseModel<any>> {
     return this.http
-      .post<ResponseModel<any>>(this.endpoint + '/extra/car/leaveMessage', { sender, content, phone })
+      .post<ResponseModel<any>>(this.endpoint + '/car/leaveMessage', { sender, content, phone })
       .pipe(
         catchError(this.handleError)
       );
