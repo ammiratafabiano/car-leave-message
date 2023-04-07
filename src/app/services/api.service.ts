@@ -9,7 +9,7 @@ import { ResponseModel } from '../models/response.model';
 })
 export class ApiService {
 
-  private endpoint = 'https://2.238.108.96:3443';
+  private endpoint = 'https://ammiratafabiano.dev:3443';
 
   constructor(private http: HttpClient) { }
 
