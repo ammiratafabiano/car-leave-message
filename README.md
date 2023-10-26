@@ -19,3 +19,6 @@ This is a straightforward web application developed to facilitate secure communi
 - **English**
 
 Make sure you have [Node.js](https://nodejs.org/) and [Ionic](https://ionicframework.com/docs/intro/cli) installed on your system before running these commands. After following these steps, the app will be up and running locally on your machine.
+
+## Screenshots
+<img src="https://github.com/ammiratafabiano/car-leave-message/assets/36988217/11b9b481-469f-4b31-ac0e-159047b29044" alt="drawing" width="200"/>
