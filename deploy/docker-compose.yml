@@ -1,0 +1,9 @@
+services:
+  car-leave-message:
+    image: ghcr.io/ammiratafabiano/car-leave-message:latest
+    container_name: car-leave-message
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8083:80"
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"

@@ -1,0 +1,6 @@
+[code autolinks=”false”]
+RewriteEngine On
+RewriteBase /
+RewriteCond %{HTTP_HOST} ^www.ammiratafabiano.dev
+RewriteRule ^carLeaveMessage/(.*)$ http://car.ammiratafabiano.dev/$1 [L,R=301]
+[/code]
