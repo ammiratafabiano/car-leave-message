@@ -71,4 +71,4 @@ Thumbs.db
 
 # Environment secrets
 /backend/.env
-/deploy/backend.env
+/deploy/car-leave-message/.env

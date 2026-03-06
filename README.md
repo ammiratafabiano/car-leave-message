@@ -52,7 +52,8 @@ Required backend env vars:
 ## Docker / Deploy
 
 ```bash
-cp backend/.env.example backend/.env
+mkdir -p deploy/car-leave-message
+cp backend/.env.example deploy/car-leave-message/.env
 docker compose -f deploy/docker-compose.yml up -d
 ```
 
