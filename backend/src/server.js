@@ -3,13 +3,15 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const rateLimit = require('express-rate-limit');
-const nodemailer = require('nodemailer');
 
 const app = express();
+app.set('trust proxy', 1); // Required when behind Apache/nginx reverse proxy
 
 const port = parseInt(process.env.PORT || '3440', 10);
-const toEmail = process.env.CONTACT_EMAIL;
-const fromEmail = process.env.MAIL_FROM || process.env.SMTP_USER;
+const haUrl = process.env.HA_URL;           // es. https://ha.ammiratafabiano.dev
+const haToken = process.env.HA_TOKEN;       // Long-Lived Access Token HA
+const haService = process.env.HA_NOTIFY_SERVICE; // es. notify/mobile_app_mio_telefono
+
 const allowedOrigins = (process.env.ALLOWED_ORIGINS || 'http://localhost:8100,https://car.ammiratafabiano.dev')
   .split(',')
   .map((entry) => entry.trim())
@@ -63,8 +65,8 @@ app.post('/car/leaveMessage', limiter, async (req, res) => {
     });
   }
 
-  if (!toEmail || !fromEmail || !process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
-    console.error('Missing SMTP configuration');
+  if (!haUrl || !haToken || !haService) {
+    console.error('Missing Home Assistant configuration (HA_URL, HA_TOKEN, HA_NOTIFY_SERVICE)');
     return res.status(500).send({
       success: false,
       errorCode: 'SERVER_CONFIG_ERROR',
@@ -73,37 +75,31 @@ app.post('/car/leaveMessage', limiter, async (req, res) => {
   }
 
   try {
-    const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: parseInt(process.env.SMTP_PORT || '587', 10),
-      secure: process.env.SMTP_SECURE === 'true',
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS
-      }
+    const phoneText = phone ? `\nTelefono: ${phone}` : '';
+    const message = `${sender} ha lasciato un messaggio:${phoneText}\n\n${content}`;
+
+    const haResponse = await fetch(`${haUrl}/api/services/${haService}`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${haToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        title: `[Car] Messaggio da ${sender}`,
+        message,
+      }),
     });
 
-    const text = [
-      'Nuovo messaggio da Car Leave Message',
-      '',
-      `Nome: ${sender}`,
-      `Telefono: ${phone || 'non fornito'}`,
-      '',
-      'Messaggio:',
-      content
-    ].join('\n');
-
-    await transporter.sendMail({
-      from: fromEmail,
-      to: toEmail,
-      subject: `[Car] Messaggio da ${sender}`,
-      text
-    });
+    if (!haResponse.ok) {
+      const errText = await haResponse.text();
+      console.error('HA API error', haResponse.status, errText);
+      return res.status(500).send({ success: false, errorCode: 'HA_NOTIFY_ERROR' });
+    }
 
     return res.send({ success: true });
   } catch (error) {
-    console.error('Mail send error', error);
-    return res.status(500).send({ success: false, errorCode: 'MAIL_SEND_ERROR' });
+    console.error('HA notify error', error);
+    return res.status(500).send({ success: false, errorCode: 'HA_NOTIFY_ERROR' });
   }
 });
 
