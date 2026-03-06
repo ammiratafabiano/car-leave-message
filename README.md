@@ -52,9 +52,8 @@ Required backend env vars:
 ## Docker / Deploy
 
 ```bash
-cd deploy
-cp backend.env.example backend.env
-docker compose up -d
+cp backend/.env.example backend/.env
+docker compose -f deploy/docker-compose.yml up -d
 ```
 
 Apache vhost example is available in `deploy/apache-vhost.conf`.

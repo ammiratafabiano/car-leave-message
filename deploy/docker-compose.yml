@@ -15,7 +15,7 @@ services:
     ports:
       - "127.0.0.1:3440:3440"
     env_file:
-      - ./backend.env
+      - ./car-leave-message/.env
     environment:
       - PORT=3440
       - ALLOWED_ORIGINS=http://localhost:8100,https://car.ammiratafabiano.dev
