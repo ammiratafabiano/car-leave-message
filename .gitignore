@@ -19,18 +19,20 @@ log.txt
 
 # Ionic
 /.ionic
-/www
-/platforms
-/plugins
+/frontend/www
+/frontend/platforms
+/frontend/plugins
 
 # Compiled output
-/dist
+/frontend/dist
+/backend/dist
 /tmp
-/out-tsc
+/frontend/out-tsc
 /bazel-out
 
 # Node
-/node_modules
+/frontend/node_modules
+/backend/node_modules
 npm-debug.log
 yarn-error.log
 
@@ -66,3 +68,7 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Environment secrets
+/backend/.env
+/deploy/backend.env

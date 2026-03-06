@@ -1,9 +1,23 @@
 services:
-  car-leave-message:
-    image: ghcr.io/ammiratafabiano/car-leave-message:latest
-    container_name: car-leave-message
+  car-leave-message-frontend:
+    image: ghcr.io/ammiratafabiano/car-leave-message-frontend:latest
+    container_name: car-leave-message-frontend
     restart: unless-stopped
     ports:
       - "127.0.0.1:8083:80"
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+  car-leave-message-backend:
+    image: ghcr.io/ammiratafabiano/car-leave-message-backend:latest
+    container_name: car-leave-message-backend
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3440:3440"
+    env_file:
+      - ./backend.env
+    environment:
+      - PORT=3440
+      - ALLOWED_ORIGINS=http://localhost:8100,https://car.ammiratafabiano.dev
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
